@@ -1,0 +1,136 @@
+using System;
+using System.Linq;
+
+class Vector
+{
+    
+    private double[] array = new double[0];
+    
+    public int Length
+    {
+        get
+        {
+            return array.Length;
+        }
+    }
+
+    public Vector(params double[] array)
+    {
+        array = (double[])array.Clone();
+    }
+   
+    public void Push(double value)
+    {
+        double[] tmp = new double[array.Length + 1];
+        for (int i = 0; i < array.Length; i++)
+        {
+            tmp[i] = array[i];
+        }
+        tmp[tmp.Length - 1] = value;
+        array = tmp;
+    }
+
+    public double GetElementAtIndex(int index)
+    {
+        return array[index];
+    }
+
+    public void RemoveAtIndex(int index)
+    {
+        double[] tmp = new double[array.Length - 1];
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            tmp[i] = array[i];
+        }
+        array = tmp;
+    }
+    
+    public void DisplayConsole()
+    {
+        string output = "[ ";
+        foreach (var element in array)
+        {
+            output += element + ", ";
+        }
+        output = output.Remove(output.Length - 2, 1);
+        output += "]";
+        Console.WriteLine(output);
+    }
+    
+    public static double operator *(Vector v1, Vector v2)
+    {
+        double product = double.NaN;
+
+        
+        double[] concatArray = v1.GetAllElements.Concat(v2.GetAllElements).ToArray();
+
+        for (int i = 0; i < concatArray.Length; i++)
+        {
+            if (concatArray[i] < 0)
+            {
+                if (double.IsNaN(product))
+                {
+                    product = concatArray[i];
+                }
+                else
+                {
+                    product *= concatArray[i];
+                }
+            }
+        }
+
+        return product == double.NaN ? 0 : product;
+    }
+    public double[] GetAllElements
+    {
+        get
+        {
+            return (double[])array.Clone();
+        }
+    }
+}
+class Program
+{
+    public static void Main()
+    {
+        Vector vector1 = new Vector();
+        Vector vector2 = new Vector();
+        Console.WriteLine("Enter numbers for the first vector:");
+        EnteringVector(vector1);
+        Console.WriteLine("Enter numbers for the second vector:");
+        EnteringVector(vector2);
+        Console.WriteLine("\nThe product of the negative elements of two 'vectors'.");
+        Console.WriteLine(vector1 * vector2);
+        Console.WriteLine();
+        Console.WriteLine("Demonstration of other methods on the example of the first vector:");
+        Console.WriteLine("Capacity property " + vector1.Length);
+        Console.WriteLine("The method of taking the last element");
+        Console.WriteLine(vector1.GetElementAtIndex(vector1.Length - 1));
+        Console.WriteLine("The method of extracting an element of a certain index");
+        vector1.RemoveAtIndex(vector1.Length - 1);
+        Console.WriteLine("The property of taking an array of all vector elements and outputting them manually");
+        var arr = vector1.GetAllElements;
+        string arrayOutput = "";
+        foreach (var item in arr)
+        {
+            arrayOutput += item + ", ";
+        }
+        arrayOutput = arrayOutput.Remove(arrayOutput.Length - 2);
+        Console.WriteLine(arrayOutput);
+        Console.WriteLine();
+        Console.WriteLine("The method is arranged in the vector of elements");
+        vector1.DisplayConsole();
+    }
+    public static void EnteringVector(Vector vec)
+    {
+
+        Console.WriteLine("Enter the size of the vector:");
+        int iterCounter = int.Parse(Console.ReadLine());
+        for (int i = 0; i < iterCounter; i++)
+        {
+            vec.Push(double.Parse(Console.ReadLine()));
+        }
+        Console.WriteLine("Entering numbers is finished");
+        vec.DisplayConsole();
+    }
+}
